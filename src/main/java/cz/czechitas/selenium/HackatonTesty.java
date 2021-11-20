@@ -39,7 +39,7 @@ public class HackatonTesty {
         kontrolaHomePage();
     }
 
-    @Disabled
+
     @Test
     public void kdyzUzivatelZadaJmenoAHesloPrihlasiSeDoSystemu() {
         // login: liskapodsitaczechitas@seznam.cz
@@ -49,7 +49,7 @@ public class HackatonTesty {
         Assertions.assertNotNull(prohlizec.findElement(By.xpath("//button[@id='user_info_acc']")),"NEPODARILO se prihlasit");
 
     }
-    @Disabled
+
     @Test
     public void strankaMyAccountObsahujeVsechnyPolozky(){
         prohlizec.navigate().to(URL_CS);
@@ -64,7 +64,6 @@ public class HackatonTesty {
 
     }
 
-    @Disabled
     @Test
     public void pridamPokojeDoKosikuAObjeviSeVKosiku (){
             prohlizec.navigate().to(URL_EN);
@@ -85,12 +84,29 @@ public class HackatonTesty {
         prohlizec.manage().timeouts().implicitlyWait(3, TimeUnit.SECONDS);
     }
 
-    @Disabled
-    @Test
-    public void kontrolaPritomnostiPrvku (){
-        prohlizec.navigate().to(URL_CS);
-        Assertions.assertNotNull(najdiDleXpath("//p[text() = 'Interior']"),"XXXX");
-    }
+   @Test
+   public void kdyzRegistrujiNovehoUzivatelaDostaneSeNaStrankuMyAccount () {
+       String uzivEmail = "mara.vesely@gmail.com";
+       String heslo = "XXT";
+       String uzivJmeno = "Mara";
+       String uzivPrijmeni = "Vese";
+
+       prohlizec.navigate().to(URL_CS);
+       cekaniNaPrvek.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//a[contains(@class, 'user_login')]"))).click();
+       cekaniNaPrvek.until(ExpectedConditions.visibilityOfElementLocated(By.id("email_create"))).sendKeys(uzivEmail);
+       prohlizec.findElement(By.id("SubmitCreate")).click();
+       prohlizec.manage().timeouts().implicitlyWait(2, TimeUnit.SECONDS);
+       cekaniNaPrvek.until(ExpectedConditions.visibilityOfElementLocated(By.id("customer_firstname"))).sendKeys(uzivJmeno);
+       cekaniNaPrvek.until(ExpectedConditions.visibilityOfElementLocated(By.id("customer_lastname"))).sendKeys(uzivJmeno);
+       cekaniNaPrvek.until(ExpectedConditions.visibilityOfElementLocated(By.id("customer_firstname"))).sendKeys(uzivPrijmeni);
+       cekaniNaPrvek.until(ExpectedConditions.visibilityOfElementLocated(By.id("passwd"))).sendKeys(heslo);
+       cekaniNaPrvek.until(ExpectedConditions.visibilityOfElementLocated(By.id("days"))).click();
+       cekaniNaPrvek.until(ExpectedConditions.visibilityOfElementLocated(By.id("months"))).click();
+       cekaniNaPrvek.until(ExpectedConditions.visibilityOfElementLocated(By.id("years"))).click();
+       //to be continued
+   }
+
+
 
     public WebElement najdiDleXpath(String xPath) {
         prohlizec.manage().timeouts().implicitlyWait(2, TimeUnit.SECONDS);
