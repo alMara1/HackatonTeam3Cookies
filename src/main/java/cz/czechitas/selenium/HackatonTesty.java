@@ -41,20 +41,44 @@ public class HackatonTesty {
     @Disabled
     @Test
     public void kdyzUzivatelZadaJmenoAHesloPrihlasiSeDoSystemu() {
-        // login:liskapodsitaczechitas@seznam.cz heslo:liskapodsita
-        prihlaseniUzivatele("liskapodsitaczechitas@seznam.c","liskapodsita");
-        prohlizec.manage().timeouts().implicitlyWait(2, TimeUnit.SECONDS);
+        // login: liskapodsitaczechitas@seznam.cz
+        // heslo: liskapodsita
+        prihlaseniUzivatele("liskapodsitaczechitas@seznam.cz","liskapodsita");
+        prohlizec.manage().timeouts().implicitlyWait(1, TimeUnit.SECONDS);
         Assertions.assertNotNull(prohlizec.findElement(By.xpath("//button[@id='user_info_acc']")),"NEPODARILO se prihlasit");
 
     }
 
     @Test
-    public void kontrolaPritomnostiPrvku (){
+    public void strankaMyAccountObsahujeVsechnyPolozky(){
         prohlizec.navigate().to(URL_CS);
-        kontrolaPritomnostiPrvkuPodleXpath("//p[text() = 'Interior']");
+        prohlizec.manage().timeouts().implicitlyWait(1, TimeUnit.SECONDS);
+        prihlaseniUzivatele("liskapodsitaczechitas@seznam.cz","liskapodsita");
+        najdiDleXpath("//button[@id='user_info_acc']").click();
+        Assertions.assertNotNull(najdiDleXpath("//span[text() = 'Order history and details']"),"Nenasel jsem odkaz 'Order history and details'.");
+        Assertions.assertNotNull(najdiDleXpath("//span[text() = 'My credit slips']"),"Nenasel jsem odkaz 'My credit slips'.");
+        Assertions.assertNotNull(najdiDleXpath("//span[text() = 'My addresses']"),"Nenasel jsem odkaz 'My addresses'.");
+        Assertions.assertNotNull(najdiDleXpath("//span[text() = 'My personal information']"),"Nenasel jsem odkaz 'My personal information'.");
+        Assertions.assertNotNull(najdiDleXpath("//a[@title = 'Home']"),"Nenasel jsem odkaz 'Home'.");
+
+
     }
 
-    public void kontrolaPritomnostiPrvkuPodleXpath(String xPath) {
+
+    @Disabled
+    @Test
+    public void kontrolaPritomnostiPrvku (){
+        prohlizec.navigate().to(URL_CS);
+        Assertions.assertNotNull(najdiDleXpath("//p[text() = 'Interior']"),"XXXX");
+    }
+
+    public WebElement najdiDleXpath(String xPath) {
+        prohlizec.manage().timeouts().implicitlyWait(2, TimeUnit.SECONDS);
+        WebElement prvek = prohlizec.findElement(By.xpath(xPath));
+        return prvek;
+    }
+
+        public void kontrolaPritomnostiPrvkuPodleXpath(String xPath) {
         try {
             prohlizec.manage().timeouts().implicitlyWait(2, TimeUnit.SECONDS);
             prohlizec.findElement(By.xpath(xPath));
