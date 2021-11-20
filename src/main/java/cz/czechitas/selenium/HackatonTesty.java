@@ -10,6 +10,7 @@ import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -29,7 +30,7 @@ public class HackatonTesty {
         cekaniNaPrvek = new WebDriverWait(prohlizec,3);
     }
 
-    @Disabled
+
     @Test
     public void zakladniSmokeTestOvereniPrvku() {
         prohlizec.navigate().to(URL_CS);
@@ -48,7 +49,7 @@ public class HackatonTesty {
         Assertions.assertNotNull(prohlizec.findElement(By.xpath("//button[@id='user_info_acc']")),"NEPODARILO se prihlasit");
 
     }
-
+    @Disabled
     @Test
     public void strankaMyAccountObsahujeVsechnyPolozky(){
         prohlizec.navigate().to(URL_CS);
@@ -61,9 +62,28 @@ public class HackatonTesty {
         Assertions.assertNotNull(najdiDleXpath("//span[text() = 'My personal information']"),"Nenasel jsem odkaz 'My personal information'.");
         Assertions.assertNotNull(najdiDleXpath("//a[@title = 'Home']"),"Nenasel jsem odkaz 'Home'.");
 
-
     }
 
+    @Disabled
+    @Test
+    public void pridamPokojeDoKosikuAObjeviSeVKosiku (){
+            prohlizec.navigate().to(URL_EN);
+
+    cekaniNaPrvek.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//p[text()='Budget cabin']/../..//span[text()='book now']"))).click();
+    ArrayList<String> windows = new ArrayList<>(prohlizec.getWindowHandles());
+    prohlizec.switchTo().window(windows.get(1));
+
+    cekaniNaPrvek.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//span[contains(text(),'Budget cabin')]")));
+        prohlizec.manage().timeouts().implicitlyWait(1, TimeUnit.SECONDS);
+
+    cekaniNaPrvek.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//i[@class='icon-plus']"))).click();
+    cekaniNaPrvek.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//button[contains(., 'Book Now')]"))).click();
+        prohlizec.manage().timeouts().implicitlyWait(1, TimeUnit.SECONDS);
+
+        cekaniNaPrvek.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//a[@title='Proceed to checkout']"))).click();
+        cekaniNaPrvek.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//p[@class='room_duration_block_head' and text()='ROOMS']/..//p[@class='room_duration_block_value' and contains(text(),'02')]")));
+        prohlizec.manage().timeouts().implicitlyWait(3, TimeUnit.SECONDS);
+    }
 
     @Disabled
     @Test
